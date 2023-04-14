@@ -83,7 +83,6 @@ DATABASES = {
 print(f'DB: {DATABASES["default"]}')
 VERS = env.str('VERS', 'xx')
 print(f'DEBUG: {DEBUG}, VERS: {VERS}, ALLOWED_HOSTS: {ALLOWED_HOSTS}')
-
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -125,3 +124,4 @@ MEDIA_URL = '/media/'
 
 STATIC_ROOT = '/static'
 MEDIA_ROOT = '/media'
+

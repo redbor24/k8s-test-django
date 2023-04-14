@@ -67,3 +67,4 @@ kubectl apply -f ./django.yaml
 ```shell
 minikube service django-deploy
 ```
+
