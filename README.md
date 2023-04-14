@@ -32,3 +32,38 @@ $ docker-compose run web ./manage.py createsuperuser
 `ALLOWED_HOSTS` -- настройка Django со списком разрешённых адресов. Если запрос прилетит на другой адрес, то сайт ответит ошибкой 400. Можно перечислить несколько адресов через запятую, например `127.0.0.1,192.168.0.1,site.test`. [Документация Django](https://docs.djangoproject.com/en/3.2/ref/settings/#allowed-hosts).
 
 `DATABASE_URL` -- адрес для подключения к базе данных PostgreSQL. Другие СУБД сайт не поддерживает. [Формат записи](https://github.com/jacobian/dj-database-url#url-schema).
+
+## Запуск сайта в Kubernetes
+
+### Переходим в каталог Django-проекта
+```shell
+cd k8s-test-django\backend_main_django
+```
+
+### Создаём образ Django-приложения
+```shell
+docker build -t django_app .
+```
+
+### Создаём на [DockerHub](https://hub.docker.com/) публичный репозиторий с именем `<username>/gjango_app`
+
+### Заливаем на [DockerHub](https://hub.docker.com/) наш свежесозданный образ
+```shell
+docker tag django_app:latest <username>/django_app:latest
+docker push <username>/django_app:latest
+```
+
+### Создаём сущность в ConfigMap
+```shell
+kubectl create configmap django-config --from-env-file=.env
+```
+
+### Запускаем образ в K8s
+```shell
+kubectl apply -f ./django.yaml
+```
+
+### Получаем ссылку на сайт
+```shell
+minikube service django-deploy
+```

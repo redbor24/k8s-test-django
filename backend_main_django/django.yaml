@@ -1,0 +1,94 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+    generation: 1
+    labels:
+      app: django-deploy
+    name: django-deploy
+    namespace: default
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: django-deploy
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        labels:
+          app: django-deploy
+      spec:
+        containers:
+          - name: django-app-d6qc9
+            image: redbor24/django_app:latest
+            imagePullPolicy: Always
+            envFrom:
+              - configMapRef:
+                  name: django-config
+            ports:
+            - containerPort: 80
+              protocol: TCP
+            resources: {}
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2023-04-12T15:04:13Z"
+      lastUpdateTime: "2023-04-12T15:04:13Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2023-04-12T15:04:09Z"
+      lastUpdateTime: "2023-04-12T15:04:13Z"
+      message: ReplicaSet "django-deploy-798ffc6d7c" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: django-deploy
+    name: django-deploy
+    namespace: default
+  spec:
+    clusterIP: 10.109.184.157
+    clusterIPs:
+    - 10.109.184.157
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - nodePort: 31004
+      port: 80
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: django-deploy
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+kind: List

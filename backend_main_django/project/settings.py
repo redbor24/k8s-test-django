@@ -80,7 +80,9 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': env.dj_db_url('DATABASE_URL', 'postgres://...'),
 }
-
+print(f'DB: {DATABASES["default"]}')
+VERS = env.str('VERS', 'xx')
+print(f'DEBUG: {DEBUG}, VERS: {VERS}, ALLOWED_HOSTS: {ALLOWED_HOSTS}')
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

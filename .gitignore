@@ -2,3 +2,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
+.env
+scratch*.py
+_Notes.*
+backend_main_django/venv/
+backend_main_django/static/
+.idea/
