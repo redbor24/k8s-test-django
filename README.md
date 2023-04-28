@@ -52,19 +52,31 @@ docker build -t django_app .
 docker tag django_app:latest <username>/django_app:latest
 docker push <username>/django_app:latest
 ```
+* _Вместо `<username>` подставьте имя своего пользователя_
 
-### Создаём сущность в ConfigMap
+### Создаём конфигурацию в ConfigMap для нашего проекта
 ```shell
 kubectl create configmap django-config --from-env-file=.env
 ```
 
-### Запускаем образ в K8s
+### Запускаем образ в Kubernetes
 ```shell
-kubectl apply -f ./django.yaml
+kubectl apply -f django-app.yaml
 ```
 
-### Получаем ссылку на сайт
+### Включаем доступ к сайту через *Ingress*
 ```shell
-minikube service django-deploy
+minikube addons enable ingress
+kubectl apply -f django-app.yaml
 ```
+Получите IP-адрес вашего minikube
+```shell
+minikube ip
+```
+Добавьте в файл `hosts` строку
+```
+<minikube ip-address> star-burger.info
+```
+В Windows это `C:\Windows\System32\drivers\etc\hosts`, в Linux - `/etc/hosts`.
 
+Теперь сайт доступен по ссылке [star-burger.info](http://star-burger.info)

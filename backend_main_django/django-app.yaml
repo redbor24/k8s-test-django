@@ -1,0 +1,54 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: django-deploy
+  spec:
+    selector:
+      matchLabels:
+        app: django-deploy
+    replicas: 3
+    template:
+      metadata:
+        labels:
+          app: django-deploy
+      spec:
+        containers:
+          - name: django-app
+            image: redbor24/django_app:latest
+            ports:
+            - containerPort: 80
+            envFrom:
+            - configMapRef:
+                name: django-config
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: django-deploy
+  spec:
+    type: LoadBalancer
+    selector:
+      app: django-deploy
+    ports:
+    - port: 80
+      targetPort: 80
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: ingress-django
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+  spec:
+    rules:
+      - host: star-burger.info
+        http:
+          paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: django-deploy
+                  port:
+                    number: 80
+kind: List
