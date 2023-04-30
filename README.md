@@ -90,3 +90,9 @@ minikube ip
 ```shell
 kubectl apply -f clear-sessions-cronjob.yaml
 ```
+
+### Применение миграций
+```shell
+kubectl apply -f django-migrate.yaml
+```
+
