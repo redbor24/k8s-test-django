@@ -1,11 +1,13 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: django-clear-sessions-once
+  name: django-clear-sessions
 spec:
   schedule: "0 0 * * *"
+  startingDeadlineSeconds: 15
   jobTemplate:
     spec:
+      ttlSecondsAfterFinished: 0
       template:
         spec:
           containers:
