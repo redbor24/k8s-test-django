@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: django-clear-sessions-once
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: django-clear-sessions
+            image: redbor24/django_app:latest
+            imagePullPolicy: IfNotPresent
+            command:
+              - python
+              - manage.py
+              - clearsessions
+          restartPolicy: OnFailure
