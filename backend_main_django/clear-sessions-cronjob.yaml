@@ -20,5 +20,5 @@ spec:
               - clearsessions
           restartPolicy: OnFailure
           envFrom:
-            - configMapRef:
-                name: django-config
+          - secretRef:
+              name: django-secret
