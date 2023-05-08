@@ -59,16 +59,31 @@ docker push <username>/django_app:latest
 kubectl create configmap django-config --from-env-file=.env
 ```
 
+### Включаем доступ к сайту через *Ingress*
+```shell
+minikube addons enable ingress
+```
+
+### Задаём настройки
+#### ConfigMap
+```commandline
+kubectl create configmap django-config --from-literal=ALLOWED_HOSTS=* --from-literal=DEBUG=False
+```
+#### Secrets
+```commandline
+kubectl apply -f django-secrets.yaml
+```
+
+### Применение миграций
+```shell
+kubectl apply -f django-migrate.yaml
+```
+
 ### Запускаем образ в Kubernetes
 ```shell
 kubectl apply -f django-app.yaml
 ```
 
-### Включаем доступ к сайту через *Ingress*
-```shell
-minikube addons enable ingress
-kubectl apply -f django-app.yaml
-```
 Получите IP-адрес вашего minikube
 ```shell
 minikube ip
@@ -89,10 +104,5 @@ minikube ip
 Чтобы не хранить гигабайты устаревших сессий, включим их автоматическое удаление раз в сутки
 ```shell
 kubectl apply -f clear-sessions-cronjob.yaml
-```
-
-### Применение миграций
-```shell
-kubectl apply -f django-migrate.yaml
 ```
 
