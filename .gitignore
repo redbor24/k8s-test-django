@@ -8,3 +8,4 @@ _Notes.*
 backend_main_django/venv/
 backend_main_django/static/
 .idea/
+_temp/
