@@ -106,3 +106,29 @@ minikube ip
 kubectl apply -f clear-sessions-cronjob.yaml
 ```
 
+### Обновление кода сайта _Kubernetes_
+
+Переходим в каталог Django-проекта
+```shell
+cd k8s-test-django\backend_main_django
+```
+
+Создаём образ Django-приложения с указанием новой версии сборки, например `v2` 
+```shell
+docker build -t django_app:v2 .
+```
+
+Пересобираем образ с указанием версии
+```shell
+docker tag django_app:v2 <username>/django_app:v2
+```
+
+Отправляем его в _DockerHub_
+```shell
+docker push <username>/django_app:v2
+```
+
+Обновляем образ в _Kubernetes_
+```shell
+kubectl set image deployment django-deploy django-app=<username>/django_app:v2
+```
