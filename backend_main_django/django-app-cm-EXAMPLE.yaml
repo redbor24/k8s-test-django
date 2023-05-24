@@ -1,0 +1,16 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: django-config
+  namespace: default
+data:
+
+# Конфигурация для разработчика (раскомментируйте следующие две строки)
+#  ALLOWED_HOSTS: '127.0.0.1'
+#  DEBUG: 'True'
+
+# Конфигурация для production (раскомментируйте следующие две строки)
+#  ALLOWED_HOSTS: '*'
+#  DEBUG: 'False'
+
+# В файле должна быть только одна пара строк
