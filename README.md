@@ -189,3 +189,5 @@ docker push <username>/django_app:v2
 ```shell
 kubectl set image deployment django-deploy django-app=<username>/django_app:v2
 ```
+
+Сайт доступен для просмотра [k8stest.redbor.ru](http://k8stest.redbor.ru/)
