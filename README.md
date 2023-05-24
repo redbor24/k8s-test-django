@@ -66,12 +66,12 @@ minikube addons enable ingress
 
 ### Задаём настройки
 #### ConfigMap
-```commandline
-kubectl create configmap django-config --from-literal=ALLOWED_HOSTS=* --from-literal=DEBUG=False
+```shell
+kubectl apply -f django-app-cm-prod.yaml
 ```
 #### Secrets
-```commandline
-kubectl apply -f django-secrets.yaml
+```shell
+kubectl apply -f django-secrets-prod.yaml
 ```
 
 ### Применение миграций
@@ -118,7 +118,7 @@ cd k8s-test-django\backend_main_django
 docker build -t django_app:v2 .
 ```
 
-Пересобираем образ с указанием версии
+Переименовываем образ для отправки в _DockerHub_ с указанием версии
 ```shell
 docker tag django_app:v2 <username>/django_app:v2
 ```
@@ -131,4 +131,45 @@ docker push <username>/django_app:v2
 Обновляем образ в _Kubernetes_
 ```shell
 kubectl set image deployment django-deploy django-app=<username>/django_app:v2
+```
+
+### Development и Production конфигурации
+
+Разработческая и продакшен среды имеют одинаковые по структуре, но различные по значениям конфигурации. 
+
+##### ConfigMap
+```yaml
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: django-config
+  namespace: default
+data:
+  ALLOWED_HOSTS: '*'
+  DEBUG: 'False'
+```
+
+##### Secrets
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: django-secret
+  namespace: default
+type: Opaque
+stringData:
+  SECRET_KEY: <django-secret-key>
+  DATABASE_URL: <postgres://user:password@host:port/db_name>
+```
+
+##### Для продакшен среды
+```shell
+kubectl apply -f django-app-cm-prod.yaml
+kubectl apply -f django-secrets-prod.yaml
+```
+
+##### Для среды разработчика
+```shell
+kubectl apply -f django-app-cm-dev.yaml
+kubectl apply -f django-secrets-dev.yaml
 ```
