@@ -8,7 +8,7 @@ items:
     selector:
       matchLabels:
         app: django-deploy
-    replicas: 3
+    replicas: 1
     template:
       metadata:
         labels:

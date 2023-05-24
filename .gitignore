@@ -4,8 +4,9 @@ __pycache__/
 *$py.class
 .env
 scratch*.py
-_Notes.*
+_Notes*.*
 backend_main_django/venv/
 backend_main_django/static/
 .idea/
 _temp/
+yaml/
